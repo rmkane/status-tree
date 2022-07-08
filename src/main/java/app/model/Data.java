@@ -1,3 +1,6 @@
+package app.model;
+import app.type.Status;
+
 public class Data {
     private final long id;
     private final Long parentId;

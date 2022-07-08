@@ -1,3 +1,4 @@
+package app.type;
 public enum Status {
     UNKNOWN(0),
     DEBUG(1),
