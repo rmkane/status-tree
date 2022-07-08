@@ -29,6 +29,8 @@ public class Main {
 		Tree<Data, StatusGroup> tree = new StatusTree(dataList);
 
 		tree.process();
-		tree.printTree();
+		tree.print();
+		
+		tree.walk(node -> System.out.println(node.getData()));
 	}
 }

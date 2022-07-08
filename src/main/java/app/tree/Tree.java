@@ -1,4 +1,6 @@
 package app.tree;
+
+import java.util.function.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +22,18 @@ public abstract class Tree<DATA, GROUP> {
 
 	public abstract void process();
 
-	public void printTree() {
+	public void walk(Consumer<Node<GROUP>> visitor) {
+		visit(this.root, visitor);
+	}
+	
+	private void visit(Node<GROUP> node, Consumer<Node<GROUP>> visitor) {
+		visitor.accept(node);
+		for (Node<GROUP> child : node.getChildren()) {
+			visit(child, visitor);
+		}
+	}
+	
+	public void print() {
 		printNode(this.root, 0);
 	}
 
