@@ -79,16 +79,16 @@ public class Tree {
   }
 
   public static <T> Node<T> toInternal(T data, Collection<Node<T>> children) {
-    return new Node<>(data, children);
+    return new TreeNode<>(data, children);
   }
 
   public static <T> Node<T> toLeaf(T data) {
-    return new Node<>(data, Collections.emptyList());
+    return new TreeNode<>(data, Collections.emptyList());
   }
 
   @SafeVarargs
   public static <T> Node<T> toNode(T data, Node<T>... children) {
-    return new Node<>(data, Arrays.asList(children));
+    return new TreeNode<>(data, Arrays.asList(children));
   }
 
   private static <T, K> Node<T> createNodeFromCollection(

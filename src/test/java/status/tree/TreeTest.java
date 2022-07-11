@@ -15,14 +15,15 @@ import status.model.Status;
 
 public class TreeTest {
 
+  private static final GroupStatus ROOT = new GroupStatus("ROOT");
   private static Collection<GroupStatus> dataList;
 
   @BeforeAll
   public static void setup() {
     dataList = new ArrayList<>();
 
-    dataList.add(new GroupStatus("A", null, Status.UNKNOWN));
-    dataList.add(new GroupStatus("B", null, Status.DEBUG));
+    dataList.add(new GroupStatus("A", Status.UNKNOWN));
+    dataList.add(new GroupStatus("B", Status.DEBUG));
     dataList.add(new GroupStatus("C", "A", Status.DEBUG));
     dataList.add(new GroupStatus("D", "A", Status.WARNING));
     dataList.add(new GroupStatus("E", "B", Status.ERROR));
@@ -36,7 +37,7 @@ public class TreeTest {
   public void testMap() {
     Collection<Node<GroupStatus>> forest =
         Tree.createForestFromCollection(dataList, GroupStatus::getId, GroupStatus::getParentId);
-    Node<GroupStatus> tree = new Node<>(new GroupStatus("ROOT", null), forest);
+    Node<GroupStatus> tree = Tree.toInternal(ROOT, forest);
 
     System.out.println("==== Tree ====");
     Tree.printNode(tree);

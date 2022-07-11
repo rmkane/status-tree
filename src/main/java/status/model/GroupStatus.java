@@ -13,6 +13,14 @@ public class GroupStatus {
     this.status = status;
   }
 
+  public GroupStatus(String id) {
+    this(id, null, Status.UNKNOWN);
+  }
+
+  public GroupStatus(String id, Status status) {
+    this(id, null, status);
+  }
+
   public GroupStatus(String id, String parentId) {
     this(id, parentId, Status.UNKNOWN);
   }
