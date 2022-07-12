@@ -1,8 +1,8 @@
 package status.tree;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static status.tree.Tree.toLeaf;
-import static status.tree.Tree.toNode;
+import static status.tree.TreeFunctions.leaf;
+import static status.tree.TreeFunctions.tree;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,22 +36,23 @@ public class TreeTest {
   @Test
   public void testMap() {
     Collection<Node<GroupStatus>> forest =
-        Tree.createForestFromCollection(dataList, GroupStatus::getId, GroupStatus::getParentId);
-    Node<GroupStatus> tree = Tree.toInternal(ROOT, forest);
+        TreeFunctions.createForestFromCollection(
+            dataList, GroupStatus::getId, GroupStatus::getParentId);
+    Node<GroupStatus> tree = TreeFunctions.internal(ROOT, forest);
 
     System.out.println("==== Tree ====");
-    Tree.printNode(tree);
+    TreeFunctions.printNode(tree);
 
     System.out.println("\n==== Pre-Order Traversal ====");
-    Tree.preOrderTraversal(tree, System.out::println);
+    TreeFunctions.preOrderTraversal(tree, System.out::println);
 
     System.out.println("\n==== Post-Order Traversal ====");
-    Tree.postOrderTraversal(tree, System.out::println);
+    TreeFunctions.postOrderTraversal(tree, System.out::println);
 
-    Node<GroupStatus> copy = Tree.map(tree, GroupStatus::rollupStatus);
+    Node<GroupStatus> copy = TreeFunctions.map(tree, GroupStatus::rollupStatus);
 
     System.out.println("\n==== Copy ====");
-    Tree.printNode(copy);
+    TreeFunctions.printNode(copy);
 
     assertEquals(Status.ERROR, copy.getData().getStatus());
     assertEquals(Status.WARNING, findStatusById(copy, "A"));
@@ -67,7 +68,7 @@ public class TreeTest {
 
   @Test
   public void testToTree() {
-    Node<String> tree = toNode("A", toLeaf("B"), toNode("C", toLeaf("D")));
+    Node<String> tree = tree("A", leaf("B"), tree("C", leaf("D")));
     List<Node<String>> children = (List<Node<String>>) tree.getChildren();
 
     assertEquals("B", children.get(0).getData());
@@ -77,11 +78,11 @@ public class TreeTest {
 
     assertEquals("D", children2.get(0).getData());
 
-    Tree.printNode(tree);
+    TreeFunctions.printNode(tree);
   }
 
   private static Status findStatusById(Node<GroupStatus> node, String id) {
-    return Optional.ofNullable(Tree.find(node, data -> data.getId().equals(id)))
+    return Optional.ofNullable(TreeFunctions.find(node, data -> data.getId().equals(id)))
         .map(Node::getData)
         .map(GroupStatus::getStatus)
         .orElse(Status.UNKNOWN);
